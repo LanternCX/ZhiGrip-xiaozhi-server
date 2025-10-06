@@ -54,11 +54,16 @@ class ASRProvider(ASRProviderBase):
         os.makedirs(self.output_dir, exist_ok=True)
         with CaptureOutput():
             self.model = AutoModel(
-                model=self.model_dir,
+                model="models/SenseVoiceSmall",
+                tokenizer="SentencepiecesTokenizer",  # 这里必须是字符串
+                tokenizer_conf={
+                    "bpemodel": "models/SenseVoiceSmall/chn_jpn_yue_eng_ko_spectok.bpe.model",
+                    "unk_symbol": "<unk>",
+                    "split_with_space": True,
+                },
                 vad_kwargs={"max_single_segment_time": 30000},
                 disable_update=True,
                 hub="hf",
-                # device="cuda:0",  # 启用GPU加速
             )
 
     async def speech_to_text(
