@@ -176,7 +176,7 @@ uploadfile
 *.json
 .vscode
 .cursor
-
+ 
 !package.json
 !**/package.json
 
@@ -184,5 +184,3 @@ uploadfile
 !main/manager-mobile/**/env/
 !main/manager-mobile/**/.env*
 !main/manager-mobile/**/*.json
-
-/config/assets/wakeup_words/
