@@ -1,10 +1,11 @@
+import json
+
 from plugins_func.register import register_function, ToolType, ActionResponse, Action
 from config.logger import setup_logging
-import serial
+from utils.client import client
 
 TAG = __name__
 logger = setup_logging()
-ser = serial.Serial('/tmp/ttyV1', 115200, timeout=1)
 
 robotic_arm_control_function_desc = {
   "type": "function",
@@ -37,7 +38,7 @@ robotic_arm_control_function_desc = {
 @register_function(
     "robotic_arm_position", robotic_arm_control_function_desc, ToolType.IOT_CTL
 )
-def robotic_arm_position(conn, mode: str, params: list[float]):
+async def robotic_arm_position(conn, mode: str, params: list[float]):
     try:
         # 确保 params 长度为3
         if len(params) != 3:
@@ -54,24 +55,28 @@ def robotic_arm_position(conn, mode: str, params: list[float]):
             f"Kinematics Mod: {mode}, args: x={x}, y={y}, z={z}"
         )
 
-        # 发送消息
-        msg = f"{mode} {x} {y} {z}"
-        ser.write((msg + "\n").encode('utf-8'))
+        cmd = {
+            "cmd": f"{mode}",
+            "args": [f"{x}", f"{y}", f"{z}"]
+        }
 
-        line = ser.readline().decode('utf-8').strip()
-        if line:
-            res = line.split()
+        await client.send(json.dumps(cmd))
+        data = await client.receive()
+
+        if data:
+            res = json.loads(data).get("args", [])
+            logger.info(f"receive: {res}")
             if mode == "ik":
                 return ActionResponse(
                     action=Action.RESPONSE,
                     result="IK Success",
-                    response=f"运动学逆解完成，底座为{res[0]}度 肩关节为{res[1]}度 肘关节为{res[2]}度"
+                    response=f"运动学逆解完成，底座为{res[0]:.2f}度 肩关节为{res[1]:.2f}度 肘关节为{res[2]:.2f}度"
                 )
             elif mode == "fk":
                 return ActionResponse(
                     action=Action.RESPONSE,
                     result="FK Success",
-                    response=f"运动学正解完成，柱面坐标下半径为 {res[0]}毫米 旋转角为{res[1]}度 高度为{res[2]}毫米"
+                    response=f"运动学正解完成，柱面坐标下半径为 {res[0]:.2f}毫米 旋转角为{res[1]:.2f}度 高度为{res[2]:.2f}毫米"
                 )
             else:
                 raise Exception("Invalid mode")

@@ -9,6 +9,7 @@ from core.utils.util import get_local_ip, validate_mcp_endpoint
 from core.http_server import SimpleHttpServer
 from core.websocket_server import WebSocketServer
 from core.utils.util import check_ffmpeg_installed
+from utils.client import client
 
 TAG = __name__
 logger = setup_logging()
@@ -41,10 +42,16 @@ async def monitor_stdin():
     while True:
         await ainput()  # 异步等待输入，消费回车
 
-
 async def main():
     check_ffmpeg_installed()
     config = load_config()
+
+    # 连接客户端
+    await client.connect()
+    # ping 服务端
+    await client.send("{\"cmd\": \"ping\", \"args\": \"[]\"}")
+    # 等待服务端响应
+    await client.receive()
 
     # 默认使用manager-api的secret作为auth_key
     # 如果secret为空，则生成随机密钥
@@ -130,9 +137,15 @@ async def main():
         )
         print("服务器已关闭，程序退出。")
 
+async def run_all():
+    # 同时运行两个协程
+    await asyncio.gather(
+        # socket_init(),
+        main()
+    )
 
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        asyncio.run(run_all())
     except KeyboardInterrupt:
         print("手动中断，程序终止。")
