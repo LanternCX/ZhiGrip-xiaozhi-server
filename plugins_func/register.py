@@ -84,7 +84,7 @@ def register_function(name, desc, type=None):
 
     def decorator(func):
         all_function_registry[name] = FunctionItem(name, desc, func, type)
-        logger.bind(tag=TAG).debug(f"函数 '{name}' 已加载，可以注册使用")
+        logger.bind(tag=TAG).info(f"函数 '{name}' 已加载，可以注册使用")
         return func
 
     return decorator
