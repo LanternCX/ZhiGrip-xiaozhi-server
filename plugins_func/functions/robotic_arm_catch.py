@@ -17,8 +17,8 @@ catch_function_desc = {
       "properties": {
         "catch_type": {
           "type": "string",
-          "enum": ["green", "blue", "yellow", "yolo"],
-          "description": "要抓取的物体类型，可选值为 green、blue、yellow 或 yolo"
+          "enum": ["green", "blue", "yolo"],
+          "description": "要抓取的物体类型，可选值为 green、blue 或 yolo，无明确说明目标就使用 yolo"
         }
       },
       "required": ["catch_type"]
@@ -60,7 +60,7 @@ async def robotic_arm_catch(conn, catch_type: str):
                 return ActionResponse(
                     action=Action.RESPONSE,
                     result="Catch Success",
-                    response=f"机械臂已成功抓取 {catch_type} 类型目标。"
+                    response=f"机械臂开始分拣目标。"
                 )
             else:
                 return ActionResponse(
