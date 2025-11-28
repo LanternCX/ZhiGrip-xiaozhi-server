@@ -11,14 +11,14 @@ catch_function_desc = {
   "type": "function",
   "function": {
     "name": "robotic_arm_catch",
-    "description": "控制机械臂抓取特定类型的物体（如 green、yellow、blue、yolo）",
+    "description": "控制机械臂抓取特定类型的物体（如 red、green、yellow、blue、yolo）",
     "parameters": {
       "type": "object",
       "properties": {
         "catch_type": {
           "type": "string",
-          "enum": ["green", "blue", "yolo"],
-          "description": "要抓取的物体类型，可选值为 green、blue 或 yolo，无明确说明目标就使用 yolo"
+          "enum": ["green", "blue", "yellow", "red", "yolo"],
+          "description": "要抓取的物体类型，可选值为red、 green、blue、yellow 或 yolo，无明确说明目标就使用 yolo"
         }
       },
       "required": ["catch_type"]
@@ -33,8 +33,8 @@ catch_function_desc = {
 async def robotic_arm_catch(conn, catch_type: str):
     try:
         # 参数合法性校验
-        if catch_type not in ("green", "blue", "yolo", "yellow"):
-            raise ValueError("type 参数必须为 'green'、'blue' 或 'yolo'")
+        if catch_type not in ("red", "green", "blue", "yolo", "yellow"):
+            raise ValueError("参数格式错误，请重新操作")
 
         # 打印日志
         logger.bind(tag=TAG).info(f"Catch target type: {catch_type}")

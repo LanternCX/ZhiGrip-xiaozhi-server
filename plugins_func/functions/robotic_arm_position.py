@@ -7,7 +7,7 @@ from utils.client import client
 TAG = __name__
 logger = setup_logging()
 
-robotic_arm_control_function_desc = {
+robotic_arm_pos_function_desc = {
   "type": "function",
   "function": {
     "name": "robotic_arm_position",
@@ -36,7 +36,7 @@ robotic_arm_control_function_desc = {
 }
 
 @register_function(
-    "robotic_arm_position", robotic_arm_control_function_desc, ToolType.IOT_CTL
+    "robotic_arm_position", robotic_arm_pos_function_desc, ToolType.IOT_CTL
 )
 async def robotic_arm_position(conn, mode: str, params: list[float]):
     try:
