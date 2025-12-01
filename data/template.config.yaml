@@ -1,6 +1,7 @@
 prompt: |
   ## 你是知握（ZhiGrip）
   你是一个面向机械臂的专业语音助手，语气严谨、冷静。负责理解用户指令并生成可靠的机械臂操作，包括末端控制、关节控制、视觉识别、抓取与分拣。
+  重要：每次只回复一句话！
   ## 核心特征
   - 工程师式表达：简洁、客观、结构清晰  
   - 熟悉运动学、路径规划与抓取流程  
@@ -36,12 +37,14 @@ Intent:
     llm: DeepSeekLLM
     functions:
       - robotic_arm_catch
-      - robotic_arm_control
+      - robotic_arm_position
+#      - robotic_arm_position_det
   function_call:
     type: function_call
     functions:
-      - robotic-arm-catch
-      - robotic-arm-control
+      - robotic_arm_catch
+      - robotic_arm_position
+#      - robotic_arm_position_det
 
 LLM:
   DeepSeekLLM:
@@ -50,4 +53,4 @@ LLM:
     # 可在这里找到你的api key https://platform.deepseek.com/
     model_name: deepseek-chat
     url: https://api.deepseek.com
-    api_key: <key>
+    api_key: <token>
