@@ -1,8 +1,12 @@
 # 3DOF-Robotic-Arm-xiaozhi-server
 
-（开发中）基于[小智 AI](https://github.com/xinnan-tech/xiaozhi-esp32-server)的 RRR 构型三自由度机械臂的语音控制服务端
+基于[小智 AI](https://github.com/xinnan-tech/xiaozhi-esp32-server)的 RRR 构型三自由度机械臂的语音控制服务端
+
+用于将自然语言转换到具体机器指令，具体的命令说明可以参照 [LanternCX/ZhiGrip-Controller](https://github.com/LanternCX/ZhiGrip-Controller) 的 websocket 接口说明以及本项目小智框架中 [ZhiGrip-xiaozhi-server/plugins_func/functions](https://github.com/LanternCX/ZhiGrip-xiaozhi-server/tree/main/plugins_func/functions) 以 `robotic_arm` 开头的插件文件中的说明
 
 ## Environment
+
+部署可以完全参照小智AI文档的本地源码部署部分：[xiaozhi-esp32-server/docs/Deployment.md](https://github.com/xinnan-tech/xiaozhi-esp32-server/blob/main/docs/Deployment.md)
 
  - Python version: Python 3.10
 
